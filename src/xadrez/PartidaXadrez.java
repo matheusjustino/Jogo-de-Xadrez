@@ -28,9 +28,10 @@ public class PartidaXadrez {
 	
 	public PeçaXadrez moverPeça(PosicaoXadrez posicaoOrigem, PosicaoXadrez posicaoDestino) {
 		Posicao origem = posicaoOrigem.paraPosicao();
-		Posicao Destino = posicaoDestino.paraPosicao();
+		Posicao destino = posicaoDestino.paraPosicao();
 		validarPosicaoOrigem(origem);
-		Peça peçaCapturada = fazerMovimento(origem, Destino);
+		validarPosicaoDestino(origem, destino);
+		Peça peçaCapturada = fazerMovimento(origem, destino);
 		return (PeçaXadrez) peçaCapturada;
 	}
 	
@@ -39,6 +40,12 @@ public class PartidaXadrez {
 		Peça peçaCapturada = tabuleiro.removePeça(destino);
 		tabuleiro.localPeça(p, destino);
 		return peçaCapturada;
+	}
+	
+	private void validarPosicaoDestino(Posicao origem, Posicao destino) {
+		if (!tabuleiro.peça(origem).possivelMovimento(destino)) {
+			throw new XadrezException("A peça escolhida não pode se mover para a posição de destino");
+		}
 	}
 	
 	private void validarPosicaoOrigem(Posicao posicao) {
