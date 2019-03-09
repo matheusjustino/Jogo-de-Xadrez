@@ -29,10 +29,15 @@ public class Tabuleiro {
 	}
 	
 	public Peça peça(int linha, int coluna) {
-		return peças[linha][coluna];
+		return this.peças[linha][coluna];
 	}
 	
 	public Peça peça(Posicao posicao) {
-		return peças[posicao.getLinha()][posicao.getColuna()];
+		return this.peças[posicao.getLinha()][posicao.getColuna()];
+	}
+	
+	public void localPeça(Peça peça, Posicao posicao) {
+		this.peças[posicao.getLinha()][posicao.getColuna()] = peça;
+		peça.posicao = posicao;
 	}
 }
