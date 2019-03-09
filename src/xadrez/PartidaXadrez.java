@@ -1,5 +1,7 @@
 package xadrez;
 
+import java.awt.Color;
+
 import tabuleiro.Peça;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
@@ -7,12 +9,24 @@ import xadrez.peças.Rei;
 import xadrez.peças.Torre;
 
 public class PartidaXadrez {
-
+	
+	private int turno;
+	private Cores jogadorAtual;
 	private Tabuleiro tabuleiro;
 
 	public PartidaXadrez() {
 		this.tabuleiro = new Tabuleiro(8, 8);
+		this.turno = 1;
+		this.jogadorAtual = Cores.WHITE;
 		iniciando();
+	}
+	
+	public int getTurno() {
+		return this.turno;
+	}
+	
+	public Cores getJogadorAtual() {
+		return this.jogadorAtual;
 	}
 
 	public PeçaXadrez[][] getPeças() {
@@ -38,6 +52,7 @@ public class PartidaXadrez {
 		validarPosicaoOrigem(origem);
 		validarPosicaoDestino(origem, destino);
 		Peça peçaCapturada = fazerMovimento(origem, destino);
+		proximoTurno();
 		return (PeçaXadrez) peçaCapturada;
 	}
 	
@@ -58,9 +73,17 @@ public class PartidaXadrez {
 		if (!tabuleiro.existePeça(posicao)) {
 			throw new XadrezException("Não existe peça na posição de origem");
 		}
+		if (this.jogadorAtual != ((PeçaXadrez) tabuleiro.peça(posicao)).getCor()) {
+			throw new XadrezException("A peça escolhida não é sua");
+		}
 		if (!tabuleiro.peça(posicao).existeAlgumMovimentoPossivel()) {
 			throw new XadrezException("Não há movimentos possíveis para esta peça");
 		}
+	}
+	
+	private void proximoTurno() {
+		this.turno++;
+		this.jogadorAtual = (this.jogadorAtual == Cores.WHITE) ? Cores.BLACK : Cores.WHITE;
 	}
 	
 	private void novaPeça(char coluna, int linha, PeçaXadrez peça) {
